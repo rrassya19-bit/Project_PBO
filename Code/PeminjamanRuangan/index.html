@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIPERU UMY - Sistem Peminjaman Ruangan Kampus</title>
+  <meta name="description" content="Sistem Peminjaman Ruangan Terintegrasi Universitas Muhammadiyah Yogyakarta - Cepat, Transparan, dan Muda Mendunia.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Style Sheets -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Chart.js for Admin Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ==================== 1. LANDING PAGE VIEW ==================== -->
+  <div id="view-landing" class="app-view active">
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="#home" class="nav-logo" id="logo-to-home">
+          <div class="logo-circle">
+            <span class="logo-u">U</span><span class="logo-m">M</span><span class="logo-y">Y</span>
+          </div>
+          <div class="logo-text">
+            <span class="logo-title">SIPERU</span>
+            <span class="logo-subtitle">Muda Mendunia</span>
+          </div>
+        </a>
+        
+        <nav class="nav-menu">
+          <a href="#beranda" class="nav-link active" data-target="section-hero">Beranda</a>
+          <a href="#ruangan" class="nav-link" data-target="section-rooms">Daftar Ruangan</a>
+          <a href="#alur" class="nav-link" data-target="section-workflow">Alur Peminjaman</a>
+        </nav>
+        
+        <div class="nav-actions">
+          <button id="btn-login-modal" class="btn btn-primary btn-icon">
+            <i data-lucide="log-in"></i> Login Portal
+          </button>
+          <button class="nav-toggle" id="nav-toggle-btn">
+            <i data-lucide="menu"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Nav Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#beranda" class="mobile-link active" data-target="section-hero">Beranda</a>
+      <a href="#ruangan" class="mobile-link" data-target="section-rooms">Daftar Ruangan</a>
+      <a href="#alur" class="mobile-link" data-target="section-workflow">Alur Peminjaman</a>
+      <button id="btn-login-modal-mobile" class="btn btn-primary btn-full mt-4">
+        <i data-lucide="log-in"></i> Login Portal
+      </button>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="section-hero" class="hero-section">
+      <div class="hero-bg-accent-1"></div>
+      <div class="hero-bg-accent-2"></div>
+      <div class="container hero-container">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-dot"></span> Sistem Peminjaman Ruangan UMY
+          </div>
+          <h1>Pinjam Ruangan Kampus <span class="text-gradient">Lebih Cepat</span> & Praktis</h1>
+          <p>Layanan terintegrasi peminjaman ruangan perkuliahan, auditorium, rapat, dan laboratorium di lingkungan Universitas Muhammadiyah Yogyakarta secara online, transparan, dan realtime.</p>
+          <div class="hero-buttons">
+            <button id="hero-btn-check" class="btn btn-primary btn-lg">
+              <i data-lucide="search"></i> Cari Ruangan
+            </button>
+            <button id="hero-btn-guide" class="btn btn-secondary btn-lg">
+              Alur Peminjaman
+            </button>
+          </div>
+        </div>
+        <div class="hero-image-wrapper">
+          <div class="hero-glass-card">
+            <div class="hero-glass-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <div class="hero-glass-title">siperu.umy.ac.id</div>
+            </div>
+            <div class="hero-glass-body">
+              <img id="img-hero-banner" src="assets/umy_campus_hero.png" alt="UMY Twin Towers" class="hero-img">
+              <div class="hero-floating-card top-right animated-float-1">
+                <div class="floating-icon bg-green"><i data-lucide="check-circle-2"></i></div>
+                <div class="floating-info">
+                  <span class="label">Persetujuan</span>
+                  <span class="val">Otomatis / Cepat</span>
+                </div>
+              </div>
+              <div class="hero-floating-card bottom-left animated-float-2">
+                <div class="floating-icon bg-gold"><i data-lucide="calendar"></i></div>
+                <div class="floating-info">
+                  <span class="label">Total Ruangan</span>
+                  <span class="val" id="hero-stat-rooms-count">6 Ruangan</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-soft-green text-green">
+              <i data-lucide="building-2"></i>
+            </div>
+            <div class="stat-numbers">
+              <h3 id="stat-total-rooms">6</h3>
+              <p>Total Ruangan</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-soft-gold text-gold">
+              <i data-lucide="check-square"></i>
+            </div>
+            <div class="stat-numbers">
+              <h3 id="stat-available-rooms">6</h3>
+              <p>Ruangan Siap Pakai</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-soft-blue text-blue">
+              <i data-lucide="calendar-check"></i>
+            </div>
+            <div class="stat-numbers">
+              <h3 id="stat-approved-bookings">2</h3>
+              <p>Peminjaman Disetujui</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper bg-soft-purple text-purple">
+              <i data-lucide="users"></i>
+            </div>
+            <div class="stat-numbers">
+              <h3 id="stat-total-users">3</h3>
+              <p>Organisasi Terdaftar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rooms Section -->
+    <section id="section-rooms" class="rooms-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>Daftar Ruangan Kampus UMY</h2>
+          <p>Temukan dan pinjam ruangan yang sesuai untuk kegiatan akademis, organisasi, seminar, maupun olahraga.</p>
+        </div>
+        
+        <!-- Search & Filter Controls -->
+        <div class="search-filter-container">
+          <div class="search-box">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="landing-search-input" placeholder="Cari nama ruangan, gedung, atau fasilitas...">
+          </div>
+          
+          <div class="filter-chips" id="landing-filter-chips">
+            <button class="chip active" data-type="all">Semua Ruang</button>
+            <button class="chip" data-type="Amphitheater">Amphitheater</button>
+            <button class="chip" data-type="Conference Room">Ruang Sidang</button>
+            <button class="chip" data-type="Auditorium">Sportorium</button>
+            <button class="chip" data-type="Seminar Room">Ruang Seminar</button>
+            <button class="chip" data-type="Computer Lab">Lab Komputer</button>
+          </div>
+        </div>
+        
+        <!-- Room Cards Grid -->
+        <div class="rooms-grid" id="landing-rooms-grid">
+          <!-- Room cards will be dynamically rendered here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="section-workflow" class="workflow-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>Alur Pengajuan Peminjaman Ruangan</h2>
+          <p>Prosedur mudah peminjaman ruangan dari pengajuan hingga persetujuan Biro Aset & Sarpras UMY.</p>
+        </div>
+        
+        <div class="workflow-timeline">
+          <div class="workflow-step">
+            <div class="step-num">1</div>
+            <div class="step-card">
+              <div class="step-icon text-green"><i data-lucide="user-check"></i></div>
+              <h4>Login Akun</h4>
+              <p>Login menggunakan akun portal mahasiswa (NIM) atau akun dosen (NIP) yang terdaftar.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-num">2</div>
+            <div class="step-card">
+              <div class="step-icon text-gold"><i data-lucide="calendar-plus"></i></div>
+              <h4>Pilih & Booking</h4>
+              <p>Pilih ruangan yang tersedia, tentukan tanggal, sesi waktu, jumlah peserta, dan tulis tujuan peminjaman.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-num">3</div>
+            <div class="step-card">
+              <div class="step-icon text-blue"><i data-lucide="file-text"></i></div>
+              <h4>Unggah Surat Rekomendasi</h4>
+              <p>Unggah surat peminjaman resmi atau proposal kegiatan dari organisasi/fakultas dalam format PDF.</p>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-num">4</div>
+            <div class="step-card">
+              <div class="step-icon text-purple"><i data-lucide="check-circle-2"></i></div>
+              <h4>Verifikasi & Unduh Slip</h4>
+              <p>Admin Biro Aset akan memeriksa berkas. Jika disetujui, Anda dapat mengunduh Slip Izin Peminjaman Ruang.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <div class="logo-circle">
+            <span class="logo-u">U</span><span class="logo-m">M</span><span class="logo-y">Y</span>
+          </div>
+          <h3>SIPERU UMY</h3>
+          <p>Sistem Informasi Peminjaman Ruangan Terintegrasi Universitas Muhammadiyah Yogyakarta.</p>
+          <p class="tagline">Muda Mendunia, Unggul & Islami</p>
+        </div>
+        <div class="footer-links">
+          <h4>Tautan Penting</h4>
+          <a href="https://umy.ac.id" target="_blank">Portal UMY</a>
+          <a href="https://krs.umy.ac.id" target="_blank">MyUMY Portal</a>
+          <a href="https://lms.umy.ac.id" target="_blank">MyKlass LMS</a>
+          <a href="#ruangan" data-target="section-rooms">Daftar Ruangan Kampus</a>
+        </div>
+        <div class="footer-contact">
+          <h4>Biro Aset & Sarpras UMY</h4>
+          <p><i data-lucide="map-pin"></i> Gedung A.R. Fachruddin A Lt. 2, Kampus Terpadu UMY, Jl. Brawijaya, Kasihan, Bantul, Yogyakarta</p>
+          <p><i data-lucide="mail"></i> sarpras@umy.ac.id</p>
+          <p><i data-lucide="phone"></i> (0274) 387656 Ext. 140</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-container">
+          <p>&copy; 2026 Universitas Muhammadiyah Yogyakarta. All Rights Reserved. Crafted for PBO Tugas.</p>
+          <p>Powered by Antigravity AI Engine</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==================== 2. STUDENT/USER DASHBOARD VIEW ==================== -->
+  <div id="view-student-dashboard" class="app-view">
+    <div class="dashboard-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo-circle">
+            <span class="logo-u">U</span><span class="logo-m">M</span><span class="logo-y">Y</span>
+          </div>
+          <div>
+            <h3>SIPERU UMY</h3>
+            <p>Portal Mahasiswa</p>
+          </div>
+        </div>
+        
+        <div class="user-profile-summary">
+          <div class="avatar bg-soft-green text-green" id="student-avatar-letter">A</div>
+          <div class="user-details">
+            <h4 id="student-profile-name">Ahmad Dahlan</h4>
+            <p id="student-profile-nim">20210140023</p>
+            <span class="badge badge-primary-subtle" id="student-profile-org">BEM FT UMY</span>
+          </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+          <a href="#student-home" class="sidebar-link active" id="nav-student-home">
+            <i data-lucide="layout-dashboard"></i> Ringkasan
+          </a>
+          <a href="#student-book" class="sidebar-link" id="nav-student-book">
+            <i data-lucide="calendar-plus"></i> Cari & Pinjam Ruang
+          </a>
+          <a href="#student-bookings" class="sidebar-link" id="nav-student-bookings">
+            <i data-lucide="history"></i> Riwayat Peminjaman
+          </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+          <button id="btn-student-logout" class="btn btn-danger btn-full btn-icon">
+            <i data-lucide="log-out"></i> Keluar Akun
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="dashboard-navbar">
+          <button class="sidebar-toggle" id="student-sidebar-toggle">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="dashboard-page-title">
+            <h2 id="student-section-title">Ringkasan Dashboard</h2>
+          </div>
+          <div class="dashboard-header-actions">
+            <span class="date-today"><i data-lucide="calendar"></i> <span id="student-current-date">Rabu, 19 Agt 2026</span></span>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <!-- STUDENT SUB-VIEW: HOME -->
+          <div id="subview-student-home" class="sub-view active">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+              <div class="welcome-text">
+                <h2>Selamat Datang Kembali, <span id="student-welcome-name">Ahmad Dahlan</span>!</h2>
+                <p>Gunakan dashboard ini untuk memesan ruangan kampus, memantau status persetujuan surat tugas peminjaman, dan mengunduh slip perizinan.</p>
+              </div>
+              <button id="btn-quick-book" class="btn btn-secondary btn-white-hover">
+                <i data-lucide="plus-circle"></i> Ajukan Peminjaman Baru
+              </button>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="stats-grid mb-6">
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-blue text-blue">
+                  <i data-lucide="layers"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="mhs-stat-total">0</h3>
+                  <p>Total Pengajuan</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-gold text-gold">
+                  <i data-lucide="clock"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="mhs-stat-pending">0</h3>
+                  <p>Menunggu Persetujuan</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-green text-green">
+                  <i data-lucide="check-circle-2"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="mhs-stat-approved">0</h3>
+                  <p>Peminjaman Disetujui</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-red text-red">
+                  <i data-lucide="x-circle"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="mhs-stat-rejected">0</h3>
+                  <p>Pengajuan Ditolak</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Bookings Table -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Aktivitas Peminjaman Terkini</h3>
+                <a href="#student-bookings" id="link-view-all-bookings" class="card-action-link">Lihat Semua</a>
+              </div>
+              <div class="table-responsive">
+                <table class="table" id="table-student-recent-bookings">
+                  <thead>
+                    <tr>
+                      <th>ID Booking</th>
+                      <th>Ruangan</th>
+                      <th>Tanggal / Sesi</th>
+                      <th>Tujuan Peminjaman</th>
+                      <th>Status</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Table row entries will be generated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- STUDENT SUB-VIEW: BOOK ROOM -->
+          <div id="subview-student-book" class="sub-view">
+            <div class="booking-flow-container">
+              <!-- Sidebar listing rooms -->
+              <div class="booking-rooms-picker">
+                <div class="picker-header">
+                  <h3>Pilih Ruangan UMY</h3>
+                  <div class="search-box sm">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="booking-search-input" placeholder="Cari nama ruang...">
+                  </div>
+                </div>
+                <div class="picker-rooms-list" id="booking-picker-rooms-list">
+                  <!-- Rooms list rendered dynamically -->
+                </div>
+              </div>
+
+              <!-- Booking Form -->
+              <div class="booking-form-card card">
+                <div class="card-header border-bottom">
+                  <div>
+                    <h3 class="card-title">Detail Form Pengajuan</h3>
+                    <p class="card-subtitle">Pilih ruangan dari panel kiri terlebih dahulu untuk melakukan peminjaman.</p>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="booking-room-preview-container" class="room-preview-horizontal mb-6 hidden">
+                    <img id="booking-room-img" src="" alt="Room Preview" class="room-preview-img">
+                    <div class="room-preview-details">
+                      <span class="room-badge" id="booking-room-type">Amphitheater</span>
+                      <h4 id="booking-room-name">Amphitheater K.H. Ibrahim</h4>
+                      <p id="booking-room-building"><i data-lucide="map-pin"></i> Gedung K.H. Ibrahim Lt. 5</p>
+                      <p id="booking-room-capacity"><i data-lucide="users"></i> Kapasitas Maksimal: 200 orang</p>
+                      <div class="room-features-badges" id="booking-room-features">
+                        <!-- badges -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <form id="form-create-booking" class="form-grid">
+                    <input type="hidden" id="booking-field-room-id" required>
+                    
+                    <div class="form-group col-6">
+                      <label for="booking-field-date" class="form-label">Tanggal Peminjaman <span class="required">*</span></label>
+                      <input type="date" id="booking-field-date" class="form-control" required min="2026-08-19">
+                    </div>
+                    
+                    <div class="form-group col-6">
+                      <label for="booking-field-timeslot" class="form-label">Sesi Waktu <span class="required">*</span></label>
+                      <select id="booking-field-timeslot" class="form-control" required>
+                        <option value="" disabled selected>-- Pilih Sesi Waktu --</option>
+                        <option value="Pagi (08:00 - 12:00)">Pagi (08:00 - 12:00)</option>
+                        <option value="Siang (13:00 - 17:00)">Siang (13:00 - 17:00)</option>
+                        <option value="Sore (15:30 - 18:30)">Sore (15:30 - 18:30)</option>
+                        <option value="Malam (18:30 - 21:30)">Malam (18:30 - 21:30)</option>
+                        <option value="Seharian (07:00 - 18:00)">Seharian (07:00 - 18:00)</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-6">
+                      <label for="booking-field-participants" class="form-label">Estimasi Jumlah Peserta <span class="required">*</span></label>
+                      <input type="number" id="booking-field-participants" class="form-control" placeholder="Contoh: 50" min="1" required>
+                    </div>
+
+                    <div class="form-group col-6">
+                      <label for="booking-field-document" class="form-label">Surat Permohonan / Proposal (Mock) <span class="required">*</span></label>
+                      <div class="file-upload-wrapper">
+                        <i data-lucide="upload-cloud" class="upload-icon"></i>
+                        <span class="upload-text">Klik untuk pilih file proposal (PDF)</span>
+                        <input type="file" id="booking-field-document" class="file-input" accept=".pdf" required>
+                      </div>
+                      <div id="file-upload-name" class="uploaded-file-name text-green hidden">
+                        <i data-lucide="check-circle-2"></i> <span id="uploaded-filename-text"></span>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-12">
+                      <label for="booking-field-purpose" class="form-label">Tujuan Kegiatan & Deskripsi Acara <span class="required">*</span></label>
+                      <textarea id="booking-field-purpose" class="form-control text-area" placeholder="Tuliskan nama acara dan deskripsi singkat tujuan peminjaman ruangan..." rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group col-12 flex-end mt-4">
+                      <button type="button" id="btn-cancel-booking-form" class="btn btn-secondary mr-3">Batal</button>
+                      <button type="submit" id="btn-submit-booking-form" class="btn btn-primary" disabled>
+                        <i data-lucide="send"></i> Kirim Form Pengajuan
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STUDENT SUB-VIEW: MY BOOKINGS -->
+          <div id="subview-student-bookings" class="sub-view">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Riwayat Pengajuan Peminjaman Ruangan</h3>
+                <div class="search-box sm">
+                  <i data-lucide="search"></i>
+                  <input type="text" id="my-bookings-search" placeholder="Cari ruangan atau tujuan...">
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table" id="table-student-full-bookings">
+                  <thead>
+                    <tr>
+                      <th>ID Booking</th>
+                      <th>Nama Ruangan</th>
+                      <th>Tanggal Kegiatan</th>
+                      <th>Sesi Waktu</th>
+                      <th>Jumlah Peserta</th>
+                      <th>Tujuan</th>
+                      <th>Status Pengajuan</th>
+                      <th>Tanggal Diajukan</th>
+                      <th>Catatan/Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Table row entries will be generated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ==================== 3. ADMIN DASHBOARD VIEW ==================== -->
+  <div id="view-admin-dashboard" class="app-view">
+    <div class="dashboard-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar admin-theme">
+        <div class="sidebar-header">
+          <div class="logo-circle">
+            <span class="logo-u">U</span><span class="logo-m">M</span><span class="logo-y">Y</span>
+          </div>
+          <div>
+            <h3>SIPERU UMY</h3>
+            <p>Portal Staf Sarpras</p>
+          </div>
+        </div>
+        
+        <div class="user-profile-summary">
+          <div class="avatar bg-soft-gold text-gold" id="admin-avatar-letter">B</div>
+          <div class="user-details">
+            <h4 id="admin-profile-name">Budi Santoso</h4>
+            <p id="admin-profile-nip">Staf Biro Aset</p>
+            <span class="badge badge-secondary-subtle">ADMINISTRATOR</span>
+          </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+          <a href="#admin-home" class="sidebar-link active" id="nav-admin-home">
+            <i data-lucide="bar-chart-3"></i> Ringkasan Analitik
+          </a>
+          <a href="#admin-approvals" class="sidebar-link" id="nav-admin-approvals">
+            <i data-lucide="clipboard-check"></i> Persetujuan Peminjaman
+            <span class="nav-badge hidden" id="badge-pending-count">0</span>
+          </a>
+          <a href="#admin-rooms" class="sidebar-link" id="nav-admin-rooms">
+            <i data-lucide="sliders"></i> Kelola Ruangan
+          </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+          <button id="btn-admin-logout" class="btn btn-danger btn-full btn-icon">
+            <i data-lucide="log-out"></i> Keluar Admin
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="dashboard-navbar">
+          <button class="sidebar-toggle" id="admin-sidebar-toggle">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="dashboard-page-title">
+            <h2 id="admin-section-title">Ringkasan Analitik Biro Aset</h2>
+          </div>
+          <div class="dashboard-header-actions">
+            <span class="date-today"><i data-lucide="calendar"></i> <span id="admin-current-date">Rabu, 19 Agt 2026</span></span>
+          </div>
+        </header>
+
+        <div class="dashboard-content">
+          <!-- ADMIN SUB-VIEW: OVERVIEW -->
+          <div id="subview-admin-home" class="sub-view active">
+            <!-- Stats -->
+            <div class="stats-grid mb-6">
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-purple text-purple">
+                  <i data-lucide="building-2"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="admin-stat-rooms">0</h3>
+                  <p>Total Ruangan</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-gold text-gold">
+                  <i data-lucide="clock"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="admin-stat-pending">0</h3>
+                  <p>Persetujuan Tertunda</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-green text-green">
+                  <i data-lucide="check-circle-2"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="admin-stat-approved">0</h3>
+                  <p>Peminjaman Aktif</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon-wrapper bg-soft-blue text-blue">
+                  <i data-lucide="calendar-check"></i>
+                </div>
+                <div class="stat-numbers">
+                  <h3 id="admin-stat-total">0</h3>
+                  <p>Total Riwayat Buku</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts & Analytics -->
+            <div class="analytics-layout mb-6">
+              <div class="card col-8">
+                <div class="card-header">
+                  <h3 class="card-title">Kepadatan Peminjaman Ruang Berdasarkan Gedung</h3>
+                </div>
+                <div class="card-body">
+                  <div class="chart-container">
+                    <canvas id="chart-room-density"></canvas>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card col-4">
+                <div class="card-header">
+                  <h3 class="card-title">Proporsi Status Pengajuan</h3>
+                </div>
+                <div class="card-body flex-center-content">
+                  <div class="chart-container sm">
+                    <canvas id="chart-booking-status"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity Admin -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Aktivitas Peminjaman Terbaru</h3>
+                <a href="#admin-approvals" id="link-admin-view-all" class="card-action-link">Kelola Semua</a>
+              </div>
+              <div class="table-responsive">
+                <table class="table" id="table-admin-recent-bookings">
+                  <thead>
+                    <tr>
+                      <th>ID Booking</th>
+                      <th>Pemohon (NIM/NIP)</th>
+                      <th>Organisasi / Unit</th>
+                      <th>Ruangan</th>
+                      <th>Tanggal / Sesi</th>
+                      <th>Status</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Table row entries will be generated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ADMIN SUB-VIEW: APPROVALS -->
+          <div id="subview-admin-approvals" class="sub-view">
+            <div class="card">
+              <div class="card-header border-bottom">
+                <div>
+                  <h3 class="card-title">Daftar Pengajuan Peminjaman Ruangan</h3>
+                  <p class="card-subtitle">Verifikasi dokumen pemohon dan setujui atau tolak pemesanan ruangan.</p>
+                </div>
+                
+                <div class="tab-filters" id="approval-tab-filters">
+                  <button class="tab-btn active" data-status="all">Semua</button>
+                  <button class="tab-btn" data-status="pending">Tertunda</button>
+                  <button class="tab-btn" data-status="approved">Disetujui</button>
+                  <button class="tab-btn" data-status="rejected">Ditolak</button>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table" id="table-admin-full-approvals">
+                  <thead>
+                    <tr>
+                      <th>ID Booking</th>
+                      <th>Informasi Pemohon</th>
+                      <th>Detail Ruangan</th>
+                      <th>Waktu Kegiatan</th>
+                      <th>Jumlah Peserta</th>
+                      <th>Tujuan Acara</th>
+                      <th>Dokumen / Proposal</th>
+                      <th>Status</th>
+                      <th>Aksi/Catatan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Table row entries will be generated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ADMIN SUB-VIEW: MANAGE ROOMS -->
+          <div id="subview-admin-rooms" class="sub-view">
+            <div class="rooms-management-toolbar mb-6">
+              <div class="search-box">
+                <i data-lucide="search"></i>
+                <input type="text" id="admin-rooms-search" placeholder="Cari nama ruangan, gedung, atau jenis...">
+              </div>
+              <button id="btn-admin-add-room" class="btn btn-primary btn-icon">
+                <i data-lucide="plus"></i> Tambah Ruangan Baru
+              </button>
+            </div>
+
+            <div class="rooms-grid" id="admin-rooms-grid">
+              <!-- Room cards with edit options will be rendered here -->
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+
+  <!-- ==================== DIALOG MODALS ==================== -->
+
+  <!-- 1. LOGIN MODAL -->
+  <div id="modal-login" class="modal">
+    <div class="modal-content modal-sm">
+      <div class="modal-header">
+        <h3 class="modal-title">Portal Peminjaman Ruangan</h3>
+        <button class="modal-close" id="modal-login-close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-login-tabs">
+          <button class="login-tab active" id="tab-login-mhs">Mahasiswa / Dosen</button>
+          <button class="login-tab" id="tab-login-admin">Staf Sarpras</button>
+        </div>
+        
+        <form id="form-login">
+          <div class="form-group">
+            <label for="login-username" class="form-label" id="login-label-username">Username / NIM / NIP</label>
+            <input type="text" id="login-username" class="form-control" placeholder="Masukkan username" required autocomplete="username">
+          </div>
+          
+          <div class="form-group">
+            <label for="login-password" class="form-label">Password</label>
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+          
+          <div id="login-error-msg" class="login-error hidden">
+            <i data-lucide="alert-triangle"></i> Username atau password salah!
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-full mt-4">
+            Masuk Portal
+          </button>
+        </form>
+
+        <div class="quick-fill-section">
+          <p class="quick-fill-title">Uji Coba Akun (Quick Fill):</p>
+          <div class="quick-fill-buttons">
+            <button class="btn btn-secondary btn-sm" id="quick-fill-mhs">Mhs (mhs/mhs)</button>
+            <button class="btn btn-secondary btn-sm" id="quick-fill-dosen">Dosen (dosen/dosen)</button>
+            <button class="btn btn-secondary btn-sm" id="quick-fill-admin">Admin (admin/admin)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ROOM DETAIL MODAL -->
+  <div id="modal-room-detail" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="room-detail-title">Detail Ruangan</h3>
+        <button class="modal-close" id="modal-room-detail-close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="room-detail-layout">
+          <div class="room-detail-image-panel">
+            <img id="room-detail-img" src="" alt="Room Detail Image">
+          </div>
+          <div class="room-detail-info-panel">
+            <span class="room-badge" id="room-detail-type">Amphitheater</span>
+            <h2 id="room-detail-name">Amphitheater K.H. Ibrahim</h2>
+            <p class="room-location" id="room-detail-building"><i data-lucide="map-pin"></i> Gedung K.H. Ibrahim E6 Lt. 5</p>
+            
+            <div class="room-meta-stats mt-4 mb-4">
+              <div class="meta-item">
+                <i data-lucide="users"></i>
+                <div class="meta-val">
+                  <span class="num" id="room-detail-capacity">200</span>
+                  <span class="lbl">Kapasitas</span>
+                </div>
+              </div>
+              <div class="meta-item">
+                <i data-lucide="info"></i>
+                <div class="meta-val">
+                  <span class="num text-green" id="room-detail-status">Tersedia</span>
+                  <span class="lbl">Status</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="room-desc-section mb-4">
+              <h4>Deskripsi Ruangan</h4>
+              <p id="room-detail-desc">Deskripsi lengkap dari ruangan...</p>
+            </div>
+            
+            <div class="room-features-section mb-6">
+              <h4>Fasilitas Ruangan</h4>
+              <ul class="features-list" id="room-detail-features">
+                <!-- Dynamically generated list -->
+              </ul>
+            </div>
+            
+            <div class="room-detail-action">
+              <button id="room-detail-btn-book" class="btn btn-primary btn-full btn-lg">
+                <i data-lucide="calendar-plus"></i> Ajukan Peminjaman Sekarang
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ADMIN REJECTION MODAL -->
+  <div id="modal-reject-reason" class="modal">
+    <div class="modal-content modal-sm">
+      <div class="modal-header">
+        <h3 class="modal-title">Tolak Peminjaman Ruangan</h3>
+        <button class="modal-close" id="modal-reject-close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-reject-booking">
+          <input type="hidden" id="reject-booking-id">
+          <div class="form-group">
+            <label for="reject-reason-text" class="form-label">Alasan Penolakan Peminjaman <span class="required">*</span></label>
+            <textarea id="reject-reason-text" class="form-control text-area" placeholder="Tulis alasan logis penolakan (misal: Ruangan dipakai praktikum, proposal kurang lengkap, dll)..." rows="4" required></textarea>
+          </div>
+          
+          <div class="flex-end mt-4">
+            <button type="button" id="btn-cancel-reject" class="btn btn-secondary mr-2">Batal</button>
+            <button type="submit" class="btn btn-danger">Tolak Pengajuan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. SLIP / RECEIPT MODAL (Simulated PDF Slip Preview) -->
+  <div id="modal-slip-preview" class="modal">
+    <div class="modal-content modal-md">
+      <div class="modal-header">
+        <h3 class="modal-title">Izin Peminjaman Ruangan Kampus UMY</h3>
+        <button class="modal-close" id="modal-slip-close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <!-- Print Area -->
+        <div id="print-slip-area" class="print-slip-area">
+          <div class="slip-header">
+            <div class="slip-logo-wrapper">
+              <div class="logo-circle dark">
+                <span class="logo-u">U</span><span class="logo-m">M</span><span class="logo-y">Y</span>
+              </div>
+            </div>
+            <div class="slip-header-text">
+              <h3>UNIVERSITAS MUHAMMADIYAH YOGYAKARTA</h3>
+              <h4>BIRO ASET DAN SARANA PRASARANA (SARPRAS)</h4>
+              <p>Kampus Terpadu UMY, Jl. Brawijaya, Kasihan, Bantul, Yogyakarta | sarpras@umy.ac.id</p>
+            </div>
+          </div>
+          
+          <div class="slip-title">
+            <h3>SURAT IZIN PEMINJAMAN RUANGAN</h3>
+            <p>Nomor: <span id="slip-no">SIP/SARPRAS/UMY/2026/012</span></p>
+          </div>
+          
+          <div class="slip-details">
+            <table class="slip-table">
+              <tr>
+                <td class="w-30 font-semibold">ID Peminjaman</td>
+                <td class="w-70" id="slip-booking-id">BKG-001</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Nama Pemohon</td>
+                <td id="slip-user-name">Ahmad Dahlan</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">NIM / NIP / ID</td>
+                <td id="slip-user-id">20210140023</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Organisasi / Unit</td>
+                <td id="slip-user-org">BEM Fakultas Teknik UMY</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Ruangan yang Dipinjam</td>
+                <td class="font-semibold text-green" id="slip-room-name">Amphitheater K.H. Ibrahim</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Tanggal Kegiatan</td>
+                <td id="slip-booking-date">20 Agustus 2026</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Sesi Waktu</td>
+                <td id="slip-booking-timeslot">Pagi (08:00 - 12:00)</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Estimasi Peserta</td>
+                <td id="slip-booking-participants">120 Orang</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Tujuan Kegiatan</td>
+                <td id="slip-booking-purpose">Seminar Nasional Teknologi "Muda Mendunia Tech-Fest 2026"</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Nama File Proposal</td>
+                <td id="slip-booking-document">proposal_seminar_bem_ft.pdf</td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Status Persetujuan</td>
+                <td><span class="badge badge-success" style="font-size: 14px; padding: 4px 10px;">DISETUJUI (APPROVED)</span></td>
+              </tr>
+            </table>
+          </div>
+          
+          <div class="slip-signatures">
+            <div class="sig-left">
+              <p>Yogyakarta, <span id="slip-date-created">19 Agustus 2026</span></p>
+              <p>Pemohon Kegiatan,</p>
+              <div class="sig-space"></div>
+              <p class="sig-name" id="slip-sig-user-name">Ahmad Dahlan</p>
+              <p class="sig-id" id="slip-sig-user-id">NIM. 20210140023</p>
+            </div>
+            
+            <div class="sig-right">
+              <p>Menyetujui,</p>
+              <p>Kepala Biro Aset & Sarpras UMY,</p>
+              <div class="sig-space barcode-sim">
+                <i data-lucide="qr-code" style="width: 50px; height: 50px; stroke-width: 1;"></i>
+                <span style="font-size: 8px; margin-top: 4px; display: block; letter-spacing: 2px;">VERIFIED BY SIPERU</span>
+              </div>
+              <p class="sig-name" id="slip-sig-admin-name">Budi Santoso, S.Kom.</p>
+              <p class="sig-id">NIP. 198204152010121003</p>
+            </div>
+          </div>
+          
+          <div class="slip-rules">
+            <p><strong>Catatan Penting Penggunaan Ruangan:</strong></p>
+            <ol>
+              <li>Bawa print out Surat Izin Peminjaman Ruangan ini ke petugas gedung (resepsionis/satpam) sebelum kunci diserahterimakan.</li>
+              <li>Menjaga kebersihan, kerapian, ketertiban, dan dilarang merusak sarana prasarana yang ada di dalam ruangan.</li>
+              <li>Mengosongkan ruangan tepat waktu sesuai dengan sesi peminjaman yang disetujui.</li>
+              <li>Matikan AC, lampu, dan LCD Proyektor sebelum meninggalkan ruangan.</li>
+            </ol>
+          </div>
+        </div>
+        
+        <div class="flex-end mt-4">
+          <button id="btn-print-slip" class="btn btn-primary btn-icon">
+            <i data-lucide="printer"></i> Cetak / Simpan PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ADD/EDIT ROOM MODAL -->
+  <div id="modal-manage-room" class="modal">
+    <div class="modal-content modal-md">
+      <div class="modal-header">
+        <h3 class="modal-title" id="manage-room-modal-title">Tambah Ruangan Baru</h3>
+        <button class="modal-close" id="modal-manage-room-close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-manage-room" class="form-grid">
+          <input type="hidden" id="manage-room-id">
+          
+          <div class="form-group col-12">
+            <label for="manage-room-name" class="form-label">Nama Ruangan <span class="required">*</span></label>
+            <input type="text" id="manage-room-name" class="form-control" placeholder="Contoh: Ruang Seminar F6.102" required>
+          </div>
+          
+          <div class="form-group col-6">
+            <label for="manage-room-building" class="form-label">Gedung & Lantai <span class="required">*</span></label>
+            <input type="text" id="manage-room-building" class="form-control" placeholder="Contoh: Gedung Siti Walidah Lt. 1" required>
+          </div>
+          
+          <div class="form-group col-6">
+            <label for="manage-room-type" class="form-label">Tipe Ruangan <span class="required">*</span></label>
+            <select id="manage-room-type" class="form-control" required>
+              <option value="" disabled selected>-- Pilih Tipe --</option>
+              <option value="Amphitheater">Amphitheater</option>
+              <option value="Conference Room">Ruang Sidang / Rapat</option>
+              <option value="Auditorium">Auditorium / Aula</option>
+              <option value="Seminar Room">Ruang Seminar</option>
+              <option value="Computer Lab">Lab Komputer</option>
+              <option value="Meeting Room">Ruang Diskusi Kecil</option>
+            </select>
+          </div>
+          
+          <div class="form-group col-6">
+            <label for="manage-room-capacity" class="form-label">Kapasitas (Orang) <span class="required">*</span></label>
+            <input type="number" id="manage-room-capacity" class="form-control" placeholder="Contoh: 80" min="1" required>
+          </div>
+          
+          <div class="form-group col-6">
+            <label for="manage-room-status" class="form-label">Status Ruangan <span class="required">*</span></label>
+            <select id="manage-room-status" class="form-control" required>
+              <option value="tersedia">Tersedia</option>
+              <option value="maintenance">Dalam Pemeliharaan (Maintenance)</option>
+            </select>
+          </div>
+          
+          <div class="form-group col-12">
+            <label class="form-label">Fasilitas Ruangan (Pilih minimal 1)</label>
+            <div class="checkbox-grid">
+              <label class="checkbox-label">
+                <input type="checkbox" name="room-features" value="AC" checked> AC
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="room-features" value="Proyektor"> Proyektor
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="room-features" value="Sound System"> Sound System
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="room-features" value="Wi-Fi UMY Premium" checked> Wi-Fi UMY Premium
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="room-features" value="Panggung & Podium"> Panggung & Podium
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="room-features" value="TV Monitor"> TV Monitor
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" name="room-features" value="Video Conference System"> Video Conference System
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group col-12">
+            <label for="manage-room-desc" class="form-label">Deskripsi Lengkap Ruangan <span class="required">*</span></label>
+            <textarea id="manage-room-desc" class="form-control text-area" placeholder="Deskripsikan letak detail ruangan, peruntukan umum, dan informasi spesifik lainnya..." rows="3" required></textarea>
+          </div>
+          
+          <div class="form-group col-12">
+            <label for="manage-room-image" class="form-label">Foto / Gambar Ruangan (Mock URL) <span class="required">*</span></label>
+            <select id="manage-room-image" class="form-control" required>
+              <option value="assets/amphitheater.png">Amphitheater (E6 Lt. 5)</option>
+              <option value="assets/ruang_sidang.png">Ruang Sidang (AR Fachruddin)</option>
+              <option value="assets/sportorium.png">Sportorium Hall</option>
+              <option value="assets/ruang_seminar.png">Ruang Seminar (F6)</option>
+              <option value="assets/lab_komputer.png">Lab Komputer (E1 Lt. 3)</option>
+              <option value="assets/meeting_room.png">Meeting Room Kecil</option>
+            </select>
+          </div>
+          
+          <div class="form-group col-12 flex-end mt-4">
+            <button type="button" id="btn-manage-room-cancel" class="btn btn-secondary mr-2">Batal</button>
+            <button type="submit" class="btn btn-primary" id="btn-manage-room-submit">Simpan Ruangan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="mockData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
